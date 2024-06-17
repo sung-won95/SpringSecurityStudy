@@ -22,6 +22,9 @@ public class User {
     private String password; // PW
 
     @Column(nullable = false)
+    private String info;
+
+    @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)// 이넘 사용시 데이터 저장 어노테이션
     private UserRoleEnum role; // 유저 권한 정보
 

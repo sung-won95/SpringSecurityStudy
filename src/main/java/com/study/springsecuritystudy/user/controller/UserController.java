@@ -26,6 +26,13 @@ public class UserController {
         this.jwtUtil = jwtUtil;
     }
 
+
+    //회원가입 (POST /user) JWT X
+    //로그인 (Post /login) JWT x
+    //JWT를 이용한 UserName 반환 GET 만들기 (GET /user/info) -> JWT O
+
+    //request response는 마음대로 몇개를 만드셔도 상관 없습니다.
+
     @PostMapping("/jwt")
     public ResponseEntity<String> createJWT(){
         String username = "박성원";

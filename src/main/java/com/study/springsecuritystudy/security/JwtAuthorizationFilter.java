@@ -32,9 +32,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
 
         String tokenValue = jwtUtil.getTokenFromRequest(req);
+
+        System.out.println("토큰 값 : " + tokenValue);
         if (StringUtils.hasText(tokenValue)) {
             tokenValue = jwtUtil.substringToken(tokenValue);
-            log.info(tokenValue);
+            System.out.println("잘라낸 토큰 값 : " + tokenValue);
+//            log.info(tokenValue);
 
             if (!jwtUtil.validateToken(tokenValue)) {
                 log.error("Token Error");
@@ -42,6 +45,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }
 
             Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
+
+            System.out.println("jwt 내부 값" + info);
+
             try {
                 setAuthentication(info.getSubject());
             } catch (Exception e) {

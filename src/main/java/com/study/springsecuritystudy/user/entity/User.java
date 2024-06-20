@@ -1,5 +1,6 @@
 package com.study.springsecuritystudy.user.entity;
 
+import com.study.springsecuritystudy.user.dto.CreateUserRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,5 +33,12 @@ public class User {
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+
+    public User(CreateUserRequest createUserRequest,String password){
+        this.username = createUserRequest.getUsername();
+        this.password = password;
+        this.info = createUserRequest.getInfo();
+        this.role = UserRoleEnum.USER;
     }
 }

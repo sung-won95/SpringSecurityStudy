@@ -51,6 +51,8 @@ public class WebSecurityConfig {
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/api/jwt").permitAll()
+                        .requestMatchers("/api/user").permitAll()
+                        .requestMatchers("/api/user/login").permitAll()
                         .anyRequest().authenticated()
         );
 

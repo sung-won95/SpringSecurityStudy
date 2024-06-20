@@ -1,16 +1,20 @@
 package com.study.springsecuritystudy.user.controller;
 
 import com.study.springsecuritystudy.security.JwtUtil;
+import com.study.springsecuritystudy.security.UserDetailsImpl;
+import com.study.springsecuritystudy.user.dto.CreateUserRequest;
+import com.study.springsecuritystudy.user.dto.CreateUserResponse;
+import com.study.springsecuritystudy.user.dto.GetInfoFromJwtResponse;
+import com.study.springsecuritystudy.user.dto.LoginUserRequest;
+import com.study.springsecuritystudy.user.entity.User;
 import com.study.springsecuritystudy.user.entity.UserRoleEnum;
 import com.study.springsecuritystudy.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -39,6 +43,26 @@ public class UserController {
         UserRoleEnum role = UserRoleEnum.USER;
 
         return new ResponseEntity<>(jwtUtil.createToken(username, role), HttpStatus.OK);
+    }
+
+    @PostMapping("/user")
+    public ResponseEntity<CreateUserResponse> createUser(@RequestBody CreateUserRequest createUserRequest){
+        User user = userService.createUser(createUserRequest);
+
+        return ResponseEntity.ok(new CreateUserResponse(user));
+    }
+
+
+    //Response도 DTO로 만들어 주시는것이 더 좋습니다. 지금은 시간 관계상 ㅠㅠ
+    @PostMapping("/user/login")
+    public ResponseEntity<String> loginUser(@RequestBody LoginUserRequest loginUserRequest){
+        return ResponseEntity.ok(userService.userLogin(loginUserRequest));
+    }
+
+    @GetMapping("/user/info")
+    public ResponseEntity<GetInfoFromJwtResponse> getInfoFromJWT(@AuthenticationPrincipal UserDetailsImpl userDetails){
+
+        return ResponseEntity.ok(new GetInfoFromJwtResponse(userDetails.getUser()));
     }
 
     @GetMapping("/")
